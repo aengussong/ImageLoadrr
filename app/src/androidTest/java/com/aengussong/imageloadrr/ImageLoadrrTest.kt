@@ -37,11 +37,6 @@ class ImageLoadrrTest {
         Assert.assertNull(result)
     }
 
-    @Test
-    fun loadIntoGarbageCollectedImageView_shouldDoNoting() {
-        Assert.fail()
-    }
-
     private suspend fun loadIntoView(url:String): Bitmap?{
         val imageView = ImageView(InstrumentationRegistry.getInstrumentation().context)
 
