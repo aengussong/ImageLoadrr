@@ -1,5 +1,6 @@
 package com.aengussong.imageloadrr
 
+import android.graphics.Bitmap
 import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.test.platform.app.InstrumentationRegistry
@@ -12,29 +13,43 @@ class ImageLoadrrTest {
     @Test
     fun loadImage_shouldLoadImage() = runBlocking {
         val url = "http://httpbin.org/image/png"
+
+        val result = loadIntoView(url)
+
+        Assert.assertNotNull(result)
+    }
+
+    @Test
+    fun loadError_shouldDoNothing() = runBlocking {
+        val url = "http://httpbin.org/get/status/500"
+
+        val result = loadIntoView(url)
+
+        Assert.assertNull(result)
+    }
+
+    @Test
+    fun loadByNotImageUrl_shouldDoNothing() = runBlocking {
+        val url = "http://httpbin.org/get"
+
+        val result = loadIntoView(url)
+
+        Assert.assertNull(result)
+    }
+
+    @Test
+    fun loadIntoGarbageCollectedImageView_shouldDoNoting() {
+        Assert.fail()
+    }
+
+    private suspend fun loadIntoView(url:String): Bitmap?{
         val imageView = ImageView(InstrumentationRegistry.getInstrumentation().context)
 
         ImageLoadrr()
             .loadImageInto(url, imageView)
             .join()
 
-        val result = imageView.drawable?.toBitmap()
-        Assert.assertNotNull(result)
-    }
-
-    @Test
-    fun loadError_shouldDoNothing(){
-        Assert.fail()
-    }
-
-    @Test
-    fun loadByNotImageUrl_shouldDoNothing() {
-        Assert.fail()
-    }
-
-    @Test
-    fun loadIntoGarbageCollectedImageView_shouldDoNoting() {
-        Assert.fail()
+        return imageView.drawable?.toBitmap()
     }
 
 }
