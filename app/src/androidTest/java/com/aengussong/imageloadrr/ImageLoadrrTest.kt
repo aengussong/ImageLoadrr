@@ -10,28 +10,31 @@ import org.junit.Test
 class ImageLoadrrTest {
 
     @Test
-    fun loadImage_shouldLoadImage()  = runBlocking {
+    fun loadImage_shouldLoadImage() = runBlocking {
         val url = "http://httpbin.org/image/png"
         val imageView = ImageView(InstrumentationRegistry.getInstrumentation().context)
 
-        ImageLoadrr.Builder().loadImage(url).into(imageView)
+        ImageLoadrr()
+            .loadImageInto(url, imageView)
+            .join()
 
         val result = imageView.drawable?.toBitmap()
         Assert.assertNotNull(result)
     }
 
     @Test
-    fun loadError_shouldLogError(){
+    fun loadError_shouldDoNothing(){
         Assert.fail()
     }
 
     @Test
-    fun loadByNotImageUrl_shouldLogError(){
+    fun loadByNotImageUrl_shouldDoNothing() {
         Assert.fail()
     }
 
     @Test
-    fun loadIntoGarbageCollectedImageView_shouldDoNoting(){
+    fun loadIntoGarbageCollectedImageView_shouldDoNoting() {
         Assert.fail()
     }
+
 }
